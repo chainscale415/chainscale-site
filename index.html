@@ -1409,63 +1409,35 @@
 <script>
   // ── NAV SCROLL ──
   window.addEventListener('scroll', () => {
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // ── CURSOR ──
-  const cursor = document.getElementById('cursor');
-  const cursorRing = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-  });
-
-  function animateRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    cursorRing.style.left = rx + 'px';
-    cursorRing.style.top = ry + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  document.querySelectorAll('a, button, input, select, textarea').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '14px';
-      cursor.style.height = '14px';
-      cursorRing.style.width = '48px';
-      cursorRing.style.height = '48px';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '8px';
-      cursor.style.height = '8px';
-      cursorRing.style.width = '32px';
-      cursorRing.style.height = '32px';
-    });
-  });
-
-  // ── NAV SCROLL ──
-  window.addEventListener('scroll', () => {
-    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+    const nav = document.getElementById('nav');
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
   });
 
   // ── PAGE NAVIGATION ──
   function showPage(name) {
+    // Hide all pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + name).classList.add('active');
+    
+    // Show the clicked page
+    const targetPage = document.getElementById('page-' + name);
+    if (targetPage) targetPage.classList.add('active');
+    
+    // Update navigation highlights
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
     const navEl = document.getElementById('nav-' + name);
     if (navEl) navEl.classList.add('active');
+    
+    // Scroll smoothly to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    // Run reveal immediately and again after scroll settles
+    
+    // Trigger animations
     checkReveal();
     setTimeout(checkReveal, 100);
     setTimeout(checkReveal, 400);
     return false;
   }
 
-  // ── SCROLL REVEAL ──
+  // ── SCROLL REVEAL ANIMATIONS ──
   function checkReveal() {
     document.querySelectorAll('.reveal, .service-detail-item').forEach(el => {
       const rect = el.getBoundingClientRect();
@@ -1474,4 +1446,11 @@
       }
     });
   }
-  window.addEven
+  
+  // Start the engine
+  window.addEventListener('scroll', checkReveal);
+  window.addEventListener('load', checkReveal);
+  checkReveal();
+</script>
+</body>
+</html>
